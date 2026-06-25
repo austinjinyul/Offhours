@@ -1,0 +1,42 @@
+1. The "Status" Header (Top 10%)
+Logo (Left): offhrs. (Lowercase, bold sans-serif).
+Profile (Right): A small circular avatar that, when tapped, opens your 15 Interests (e.g., #NaturalWine #SaaS #Pilates).
+The Hook: A one-line greeting that changes based on the day:
+Sunday: "Your week is ready, [Name]."
+Wednesday: "You have 3.5 hours of margin today."
+2. The Sunday Reset (Primary Card - Center)
+On Sunday and Monday, this is the largest element. On other days, it shrinks to a summary.
+
+Title: Sunday Reset
+Sub-headline: "7 suggested events based on your 12 interests."
+The List (Vertical Scroll):
+Event Card: Title of event + AI Match Score (e.g., "98% Match").
+The Gap-Fit: A small label saying: "Fits your Thursday 6 PM gap."
+Action: A single button: Add to Calendar.
+3. The Margin (The "Gap" View - Dynamic)
+This is a visual timeline of the current day that highlights the empty spaces found by the AI.
+
+Visual: A vertical or horizontal bar representing the hours of 5 PM – 10 PM.
+The Gaps: White spaces in the bar are labeled with the duration (e.g., "1.5hr Margin").
+The "Scout" Trigger: Inside an empty gap, a button: Scout this gap.
+When tapped, it tells the AI: "Find me something specifically for this 90-minute window tonight."
+4. Surface Alerts (Small "New" Items)
+This section shows the results of the "Daily Inquiry" API—events that just popped up this morning.
+
+Title: Just Surfaced
+Content: Small, horizontal "chips" or cards showing:
+"Last-minute Jazz Set (Tonight, 8 PM)"
+"Pop-up Ramen Workshop (Friday, 7 PM)"
+Action: Swipe right to add, left to ignore.
+5. Interest Pulse (Bottom Section)
+A small cluster of your active interest "tags."
+
+Visual: Aesthetic teal bubbles.
+Why it's there: To remind the user why they are seeing these events.
+Interaction: Tapping a bubble (e.g., #Fintech) immediately filters the dashboard to show only events for that interest.
+6. Bottom Navigation (Fixed)
+Keep it simple with 3 icons:
+
+Home (Dashboard): The main view.
+Calendar (The Arc): A full weekly view showing your work events and Offhrs events together.
+Explore: A search bar if they want to manually find something (though the goal is that they never have to).
