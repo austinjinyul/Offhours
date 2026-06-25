@@ -3,13 +3,19 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Offhrs.ai API — AI-powered lifestyle productivity for busy professionals
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: users
+    description: User profile and interests
+  - name: calendar
+    description: Calendar gap detection
+  - name: dashboard
+    description: Dashboard views
 paths:
   /healthz:
     get:
@@ -24,6 +30,94 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /users/me:
+    get:
+      operationId: getMe
+      tags: [users]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: Current user profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Unauthorized
+
+  /users/me/interests:
+    put:
+      operationId: updateInterests
+      tags: [users]
+      summary: Save user interests (5–15 items)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterestsInput"
+      responses:
+        "200":
+          description: Interests saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "400":
+          description: Validation error
+        "401":
+          description: Unauthorized
+
+  /calendar/gaps:
+    get:
+      operationId: getCalendarGaps
+      tags: [calendar]
+      summary: Get detected free gaps (≥1h, weekdays 5–10 PM) for the current week
+      responses:
+        "200":
+          description: List of gaps
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CalendarGap"
+        "401":
+          description: Unauthorized
+
+  /dashboard/sunday-reset:
+    get:
+      operationId: getSundayReset
+      tags: [dashboard]
+      summary: Get suggested Sunday Reset events (curated based on interests)
+      responses:
+        "200":
+          description: List of suggested events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SuggestedEvent"
+        "401":
+          description: Unauthorized
+
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get overall dashboard summary stats
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+        "401":
+          description: Unauthorized
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +128,97 @@ components:
       required:
         - status
 
+    UserProfile:
+      type: object
+      required: [clerkId, email, onboardingComplete]
+      properties:
+        clerkId:
+          type: string
+        email:
+          type: string
+        name:
+          type: ["string", "null"]
+        avatarUrl:
+          type: ["string", "null"]
+        interests:
+          type: array
+          items:
+            type: string
+        onboardingComplete:
+          type: boolean
+        createdAt:
+          type: string
+
+    InterestsInput:
+      type: object
+      required: [interests]
+      properties:
+        interests:
+          type: array
+          items:
+            type: string
+          minItems: 5
+          maxItems: 15
+
+    CalendarGap:
+      type: object
+      required: [id, date, dayOfWeek, startTime, endTime, durationMinutes]
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          description: YYYY-MM-DD
+        dayOfWeek:
+          type: string
+          description: "Monday, Tuesday, etc."
+        startTime:
+          type: string
+          description: "HH:MM in 24h format e.g. 18:00"
+        endTime:
+          type: string
+          description: "HH:MM in 24h format e.g. 20:30"
+        durationMinutes:
+          type: integer
+        label:
+          type: ["string", "null"]
+          description: Human-friendly label e.g. '2.5 hr window'
+
+    SuggestedEvent:
+      type: object
+      required: [id, title, category, dayOfWeek, time, venue, neighborhood]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        category:
+          type: string
+          description: e.g. Fitness, Food & Drink, Networking, Wellness
+        dayOfWeek:
+          type: string
+        time:
+          type: string
+          description: e.g. 'Tuesday 7:00 PM'
+        venue:
+          type: string
+        neighborhood:
+          type: string
+        description:
+          type: ["string", "null"]
+        matchedInterest:
+          type: ["string", "null"]
+
+    DashboardSummary:
+      type: object
+      required: [gapsThisWeek, totalFreeHours, suggestedEventsCount, weekStartDate]
+      properties:
+        gapsThisWeek:
+          type: integer
+        totalFreeHours:
+          type: number
+        suggestedEventsCount:
+          type: integer
+        weekStartDate:
+          type: string
+          description: YYYY-MM-DD of the Monday of current week

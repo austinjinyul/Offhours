@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Offhrs.ai"
+version = "1.0.0"
+id = "artifacts/offhrs"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21994
+
+[services.development]
+run = "pnpm --filter @workspace/offhrs run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/offhrs", "run", "build" ]
+publicDir = "artifacts/offhrs/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21994"
+BASE_PATH = "/"
