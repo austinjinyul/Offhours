@@ -15,8 +15,8 @@ export default function Header() {
     <header className="border-b border-border bg-card">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/dashboard" className="flex items-center gap-3">
-          <img src="/logo.svg" alt="Offhrs.ai" className="w-6 h-6" />
-          <span className="font-semibold tracking-tight text-foreground">Offhrs.ai</span>
+          <img src="/logo.svg" alt="Offhours.ai" className="w-6 h-6" />
+          <span className="font-semibold tracking-tight text-foreground">Offhours.ai</span>
         </Link>
 
         <div className="flex items-center gap-6">

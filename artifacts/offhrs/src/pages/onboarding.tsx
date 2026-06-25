@@ -71,7 +71,7 @@ export default function OnboardingPage() {
   return (
     <div className="min-h-[100dvh] bg-background text-foreground max-w-md mx-auto px-6 flex flex-col">
       <header className="pt-10 pb-6 flex items-center justify-between">
-        <span className="text-sm font-light tracking-widest text-foreground" style={{ letterSpacing: "0.12em" }}>offhrs.ai</span>
+        <span className="text-sm font-light tracking-widest text-foreground" style={{ letterSpacing: "0.12em" }}>offhours.ai</span>
         <span className="text-[11px] tracking-[0.15em] text-muted-foreground font-light uppercase">
           {interests.length}/15
         </span>

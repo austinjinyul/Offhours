@@ -10,7 +10,7 @@ export default function LandingPage() {
     <div className="min-h-[100dvh] bg-background text-foreground flex flex-col max-w-md mx-auto px-6">
       <header className="pt-12 pb-6 flex items-center justify-between">
         <span className="text-xs tracking-[0.15em] text-muted-foreground font-light">{dayName} · {monthDay}</span>
-        <span className="text-sm font-light tracking-widest text-foreground" style={{ fontFamily: "'Inter', sans-serif", letterSpacing: "0.12em" }}>offhrs.ai</span>
+        <span className="text-sm font-light tracking-widest text-foreground" style={{ fontFamily: "'Inter', sans-serif", letterSpacing: "0.12em" }}>offhours.ai</span>
         <div className="flex gap-4">
           <Link href="/sign-in" className="text-xs tracking-[0.12em] text-muted-foreground hover:text-foreground transition-colors uppercase font-light">
             Sign In
@@ -30,7 +30,7 @@ export default function LandingPage() {
           </h1>
 
           <p className="text-sm text-muted-foreground leading-relaxed mt-5 mb-10 max-w-xs font-light">
-            Offhrs finds the gaps in your calendar and fills them with events, dinners, and experiences curated to your taste.
+            Offhours finds the gaps in your calendar and fills them with events, dinners, and experiences curated to your taste.
           </p>
 
           <div className="space-y-3">
@@ -67,7 +67,7 @@ export default function LandingPage() {
       </main>
 
       <footer className="py-8 text-center">
-        <span className="text-[10px] tracking-[0.2em] text-muted-foreground/40 uppercase">Offhrs.ai · Your evenings, reclaimed</span>
+        <span className="text-[10px] tracking-[0.2em] text-muted-foreground/40 uppercase">Offhours.ai · Your evenings, reclaimed</span>
       </footer>
     </div>
   );

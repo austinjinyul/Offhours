@@ -178,7 +178,7 @@ function ClerkProviderWithRoutes() {
       localization={{
         signIn: {
           start: {
-            title: "Sign in to Offhrs",
+            title: "Sign in to Offhours",
             subtitle: "Welcome back to your command center",
           },
         },

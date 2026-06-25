@@ -401,7 +401,7 @@ function ExploreView({ interests }: { interests: string[] }) {
       </div>
       <div className="text-center py-12">
         <p className="text-sm text-muted-foreground font-light">Search is coming soon.</p>
-        <p className="text-xs text-muted-foreground/40 font-light mt-2">For now, Offhrs scouts so you don't have to.</p>
+        <p className="text-xs text-muted-foreground/40 font-light mt-2">For now, Offhours scouts so you don't have to.</p>
       </div>
       {interests.length > 0 && (
         <div>
@@ -451,7 +451,7 @@ export default function DashboardPage() {
     <div className="min-h-[100dvh] bg-background text-foreground flex flex-col max-w-md mx-auto">
       {/* Header */}
       <header className="px-6 pt-10 pb-5 flex items-center justify-between flex-shrink-0">
-        <span className="text-base font-semibold tracking-tight">offhrs.</span>
+        <span className="text-base font-semibold tracking-tight">offhours.</span>
         <button
           onClick={() => setShowInterests(true)}
           className="w-8 h-8 rounded-full bg-[#222] border border-white/10 overflow-hidden flex items-center justify-center hover:border-white/20 transition-colors"
