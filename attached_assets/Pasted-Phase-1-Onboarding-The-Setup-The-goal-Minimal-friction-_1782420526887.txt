@@ -1,0 +1,46 @@
+Phase 1: Onboarding (The Setup)
+The goal: Minimal friction, high perceived value.
+
+Splash & Logic: The user lands on a minimalist dark screen. Ability: Sign in with Google or Outlook (required for calendar access).
+Interest Mapping: Instead of a long list, the user sees a "Vibe Cloud." Ability: Select 5–15 interests. As they tap, the AI suggests related sub-niches (e.g., if you tap "Wine," it suggests "Natural Wine" or "Sommelier Workshops").
+Calendar Permission: A clear prompt explaining the "Gap Detection" feature. Ability: Grant "Read-only" access to primary calendars. The user can toggle which specific calendars to exclude (e.g., "Exclude my Work-Deadlines calendar").
+Notification Opt-in: Ability: Set the "Morning Pulse" notification time (default is 8:00 AM).
+Phase 2: The "Sunday Reset" (Weekly Ritual)
+The goal: High-level planning without the effort.
+
+The Delivery: Every Sunday at 5:00 PM, the user gets a notification: "Your week is ready."
+The Master List: The user opens the app to see a curated list of 7–10 events for the upcoming week.
+The Ability:
+View Details: Tap any event to see price, location, attire, and parking.
+Gap-Fit Check: Every event has a "Fit Score." The AI shows: "Fits perfectly in your Tuesday 2-hour gap between 'Team Sync' and 'Dinner'."
+One-Click Add: Tap Add to Calendar. The event is instantly pushed to their Google/Outlook calendar with the link and address in the notes.
+The Lock: After the user reviews the list, the interests are "locked" for the week to prevent mid-week FOMO and decision fatigue.
+Phase 3: The Dashboard (Daily Execution)
+The goal: Managing the "Margin" of your day.
+
+The Margin Timeline: A visual bar representing 5:00 PM – 10:00 PM today.
+Ability:
+Identify Gaps: The user sees grey blocks (busy) and teal blocks (free "Margin").
+Scout Gap: If a user suddenly has a meeting canceled, they can tap a "Margin" block. Ability: Trigger an instant AI "Scout" for that specific 1-hour window.
+Just Surfaced: A section showing events discovered by the "Morning Inquiry" API. Ability: Swipe right to add a newly surfaced event to an open gap in the current week.
+Phase 4: Refinement & AI Learning
+The goal: Making the tool smarter over time.
+
+Event Feedback: After an event date passes, the app sends a subtle "How was it?" ping. Ability: Rate 1–5 stars.
+AI Pivot: If a user rates an event poorly, the AI asks: "Too crowded? Not your vibe? Too expensive?"
+Ability: The user can update their 15 Interests at any time. While changes don't affect the current Sunday Reset list, they immediately influence the "Daily Inquiry" and "Gap Scouting" results.
+Summary of User Abilities
+
+
+Category	User Ability
+Discovery	Auto-discover events based on niche interests without searching.
+Planning	Receive a pre-built weekly social itinerary every Sunday.
+Logic	Automatically find "gaps" in a busy work calendar for social activities.
+Spontaneity	Manually "Scout" a specific free time slot for an immediate suggestion.
+Integration	Push events to Google/Outlook calendar with all logistics (parking, cost) in 1-tap.
+Control	Filter events by budget, travel distance, and "Vibe" (Active vs. Chill).
+Focus	"Lock" the week on Monday to eliminate the stress of constant checking.
+The "Subscription Value" Loop
+The Problem: Searching for events takes 2–3 hours a week.
+The Offhrs Solution: The user spends 5 minutes on Sunday adding events to their calendar gaps and 0 minutes the rest of the week.
+The ROI: $12/month saves ~12 hours of administrative mental load per month.
