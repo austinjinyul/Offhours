@@ -1,4 +1,4 @@
-import { pgTable, text, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, boolean, timestamp, doublePrecision } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -9,6 +9,9 @@ export const usersTable = pgTable("users", {
   avatarUrl: text("avatar_url"),
   interests: text("interests").array().notNull().default([]),
   onboardingComplete: boolean("onboarding_complete").notNull().default(false),
+  workAddress: text("work_address"),
+  workLat: doublePrecision("work_lat"),
+  workLng: doublePrecision("work_lng"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
 });

@@ -6,10 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface InterestsInput {
-  /**
-     * @minItems 5
-     * @maxItems 15
-     */
-  interests: string[];
+export interface LocationInput {
+  /** Full street address of work location */
+  workAddress: string;
 }

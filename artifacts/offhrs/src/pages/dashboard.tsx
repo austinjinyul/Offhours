@@ -238,14 +238,24 @@ function HomeView({
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <h3 className="font-serif text-lg leading-snug flex-1">{event.title}</h3>
                   </div>
-                  <p className="text-xs text-muted-foreground font-light leading-relaxed mb-3">
+                  <p className="text-xs text-muted-foreground font-light leading-relaxed mb-2">
                     {event.venue} · {event.neighborhood}
                   </p>
-                  {fitGap && (
-                    <div className="inline-flex items-center gap-1.5 text-[10px] tracking-[0.12em] text-muted-foreground/60 uppercase border border-white/8 px-2.5 py-1 rounded-full mb-4">
-                      Fits your {event.dayOfWeek} {fitGap.startTime} gap
-                    </div>
-                  )}
+                  <div className="flex flex-wrap items-center gap-2 mb-3">
+                    {event.travelLabel && (
+                      <span className="inline-flex items-center gap-1 text-[10px] tracking-[0.1em] text-muted-foreground/70 bg-white/4 border border-white/8 px-2.5 py-1 rounded-full">
+                        <svg className="w-2.5 h-2.5" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M8 0C5.24 0 3 2.24 3 5c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5zm0 6.75A1.75 1.75 0 1 1 8 3.25 1.75 1.75 0 0 1 8 6.75z"/>
+                        </svg>
+                        {event.travelLabel} from work
+                      </span>
+                    )}
+                    {fitGap && (
+                      <span className="inline-flex items-center gap-1.5 text-[10px] tracking-[0.12em] text-muted-foreground/60 uppercase border border-white/8 px-2.5 py-1 rounded-full">
+                        Fits your {event.dayOfWeek} {fitGap.startTime} gap
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] tracking-[0.15em] text-muted-foreground/50 uppercase">
                       {event.dayOfWeek} · {event.time.split(" ").slice(-2).join(" ")}

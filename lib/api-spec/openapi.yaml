@@ -3,7 +3,7 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: Offhrs.ai API — AI-powered lifestyle productivity for busy professionals
+  description: Offhours.ai API — AI-powered lifestyle productivity for busy professionals
 servers:
   - url: /api
     description: Base API path
@@ -64,6 +64,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserProfile"
+        "400":
+          description: Validation error
+        "401":
+          description: Unauthorized
+
+  /users/me/location:
+    put:
+      operationId: updateLocation
+      tags: [users]
+      summary: Save user work address (geocoded server-side)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationInput"
+      responses:
+        "200":
+          description: Location saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationResult"
         "400":
           description: Validation error
         "401":
@@ -146,6 +169,12 @@ components:
             type: string
         onboardingComplete:
           type: boolean
+        workAddress:
+          type: ["string", "null"]
+        workLat:
+          type: ["number", "null"]
+        workLng:
+          type: ["number", "null"]
         createdAt:
           type: string
 
@@ -159,6 +188,27 @@ components:
             type: string
           minItems: 5
           maxItems: 15
+
+    LocationInput:
+      type: object
+      required: [workAddress]
+      properties:
+        workAddress:
+          type: string
+          description: Full street address of work location
+
+    LocationResult:
+      type: object
+      properties:
+        workAddress:
+          type: ["string", "null"]
+        workLat:
+          type: ["number", "null"]
+        workLng:
+          type: ["number", "null"]
+        geocoded:
+          type: boolean
+          description: Whether the address was successfully geocoded
 
     CalendarGap:
       type: object
@@ -208,6 +258,15 @@ components:
           type: ["string", "null"]
         matchedInterest:
           type: ["string", "null"]
+        travelTimeMinutes:
+          type: ["integer", "null"]
+          description: Estimated travel time in minutes from work address
+        travelLabel:
+          type: ["string", "null"]
+          description: Human-readable travel label e.g. '12 min drive'
+        travelable:
+          type: ["boolean", "null"]
+          description: Whether the event is reachable within the available gap
 
     DashboardSummary:
       type: object

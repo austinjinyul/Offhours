@@ -6,20 +6,13 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface UserProfile {
-  clerkId: string;
-  email: string;
-  /** @nullable */
-  name?: string | null;
-  /** @nullable */
-  avatarUrl?: string | null;
-  interests?: string[];
-  onboardingComplete: boolean;
+export interface LocationResult {
   /** @nullable */
   workAddress?: string | null;
   /** @nullable */
   workLat?: number | null;
   /** @nullable */
   workLng?: number | null;
-  createdAt?: string;
+  /** Whether the address was successfully geocoded */
+  geocoded?: boolean;
 }
