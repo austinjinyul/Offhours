@@ -223,7 +223,6 @@ function HomeView({
         ) : (
           <div className="space-y-3">
             {primaryEvents.map((event, i) => {
-              const score = scores[event.id] ?? 80;
               const fitGap = gaps.find(
                 (g) => g.dayOfWeek?.toLowerCase() === event.dayOfWeek?.toLowerCase()
               );
