@@ -1,72 +1,74 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 
 export default function LandingPage() {
+  const today = new Date();
+  const dayName = today.toLocaleDateString("en-US", { weekday: "long" }).toUpperCase();
+  const monthDay = today.toLocaleDateString("en-US", { month: "long", day: "numeric" }).toUpperCase();
+
   return (
-    <div className="min-h-[100dvh] bg-background text-foreground flex flex-col relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')" }}></div>
-      
-      <header className="px-8 py-8 flex items-center justify-between relative z-10">
-        <div className="flex items-center gap-3">
-          <img src="/logo.svg" alt="Offhrs.ai Logo" className="w-8 h-8" />
-          <span className="font-semibold tracking-tight text-lg">Offhrs.ai</span>
-        </div>
-        <div className="flex items-center gap-6">
-          <Link href="/sign-in" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+    <div className="min-h-[100dvh] bg-background text-foreground flex flex-col max-w-md mx-auto px-6">
+      <header className="pt-12 pb-6 flex items-center justify-between">
+        <span className="text-xs tracking-[0.15em] text-muted-foreground font-light">{dayName} · {monthDay}</span>
+        <span className="text-sm font-light tracking-widest text-foreground" style={{ fontFamily: "'Inter', sans-serif", letterSpacing: "0.12em" }}>offhrs.ai</span>
+        <div className="flex gap-4">
+          <Link href="/sign-in" className="text-xs tracking-[0.12em] text-muted-foreground hover:text-foreground transition-colors uppercase font-light">
             Sign In
-          </Link>
-          <Link href="/sign-up" className="text-sm font-medium bg-foreground text-background px-4 py-2 rounded-md hover:bg-foreground/90 transition-colors">
-            Get Started
           </Link>
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col justify-center px-8 relative z-10 max-w-5xl mx-auto w-full">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+      <main className="flex-1 flex flex-col pt-8">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl"
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h1 className="text-5xl md:text-7xl font-semibold tracking-tighter leading-[1.1] mb-6">
-            The command center for your evenings.
+          <h1 className="font-serif text-5xl leading-[1.08] mb-4 tracking-tight">
+            The evenings<br />
+            <span className="italic text-muted-foreground">worth taking.</span>
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground font-light tracking-tight max-w-2xl mb-12 leading-relaxed">
-            A brilliant, well-connected assistant that knows your taste, finds the gaps in your calendar, and fills them with things worth showing up for.
+
+          <p className="text-sm text-muted-foreground leading-relaxed mt-5 mb-10 max-w-xs font-light">
+            Offhrs finds the gaps in your calendar and fills them with events, dinners, and experiences curated to your taste.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-            <Link href="/sign-up" className="group inline-flex items-center gap-2 bg-foreground text-background px-6 py-3 rounded-lg text-lg font-medium hover:bg-foreground/90 transition-all">
-              Reclaim your time
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+          <div className="space-y-3">
+            <Link href="/sign-up">
+              <button className="w-full bg-foreground text-background text-sm font-medium py-4 rounded-full tracking-wide hover:bg-white/90 transition-colors">
+                Get started
+              </button>
             </Link>
-            <Link href="/sign-in" className="inline-flex items-center justify-center px-6 py-3 rounded-lg text-lg font-medium border border-border bg-card/50 hover:bg-card hover:border-muted-foreground/30 transition-all text-foreground">
-              Sign In
+            <Link href="/sign-in">
+              <button className="w-full bg-transparent text-foreground text-sm font-light py-4 rounded-full border border-white/10 tracking-wide hover:border-white/20 transition-colors">
+                Sign in
+              </button>
             </Link>
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.4 }}
-          className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-border/50 pt-12"
+          transition={{ duration: 1, delay: 0.5 }}
+          className="mt-16 space-y-px"
         >
-          <div>
-            <h3 className="text-accent font-medium mb-2">Automated Discovery</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">We scan the city for events, dinners, and gatherings that match your exact interests.</p>
-          </div>
-          <div>
-            <h3 className="text-accent font-medium mb-2">Calendar Intelligence</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">Seamlessly detects gaps in your schedule and drops suggestions right where they fit.</p>
-          </div>
-          <div>
-            <h3 className="text-accent font-medium mb-2">Sunday Reset</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">Wake up every Sunday to a curated itinerary for the week ahead. No planning required.</p>
-          </div>
+          {[
+            { label: "CALENDAR INTELLIGENCE", desc: "Detects gaps in your schedule and finds events that fit exactly." },
+            { label: "CURATED TO YOUR TASTE", desc: "Add your interests once. We scout overnight while you sleep." },
+            { label: "SUNDAY RESET", desc: "Every week, a fresh itinerary lands before Monday." },
+          ].map((item) => (
+            <div key={item.label} className="py-5 border-t border-white/6">
+              <div className="text-[10px] tracking-[0.2em] text-muted-foreground mb-2 font-medium">{item.label}</div>
+              <div className="text-sm text-foreground/70 font-light leading-relaxed">{item.desc}</div>
+            </div>
+          ))}
         </motion.div>
       </main>
+
+      <footer className="py-8 text-center">
+        <span className="text-[10px] tracking-[0.2em] text-muted-foreground/40 uppercase">Offhrs.ai · Your evenings, reclaimed</span>
+      </footer>
     </div>
   );
 }
