@@ -32,9 +32,6 @@ function timeToMinutes(t: string): number {
   return h * 60 + m;
 }
 
-function matchScore(matched: boolean): number {
-  return matched ? 90 + Math.floor(Math.random() * 8) : 72 + Math.floor(Math.random() * 12);
-}
 
 const SURFACED: { id: string; title: string; when: string }[] = [
   { id: "s1", title: "Quiet jazz set", when: "Tonight, 8 PM" },
@@ -188,16 +185,6 @@ function HomeView({
   const primaryEvents = isSundayOrMonday() ? filteredEvents : filteredEvents.slice(0, 2);
   const isCompact = !isSundayOrMonday();
 
-  const scores = Object.fromEntries(
-    events.map((e) => {
-      const matched = interests.some((i) =>
-        i.toLowerCase().includes((e.matchedInterest ?? "").toLowerCase()) ||
-        (e.matchedInterest ?? "").toLowerCase().includes(i.toLowerCase())
-      );
-      return [e.id, matchScore(matched && !!e.matchedInterest)];
-    })
-  );
-
   const visibleSurfaced = SURFACED.filter((s) => !dismissed.has(s.id));
 
   return (
@@ -250,9 +237,6 @@ function HomeView({
                 >
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <h3 className="font-serif text-lg leading-snug flex-1">{event.title}</h3>
-                    <span className="text-xs font-light text-muted-foreground whitespace-nowrap pt-0.5">
-                      {score}% match
-                    </span>
                   </div>
                   <p className="text-xs text-muted-foreground font-light leading-relaxed mb-3">
                     {event.venue} · {event.neighborhood}
