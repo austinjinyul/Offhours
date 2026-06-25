@@ -9,6 +9,7 @@ import {
 } from "@workspace/api-client-react";
 import { useClerk } from "@clerk/react";
 import { Home, CalendarDays, Search, X, ChevronRight } from "lucide-react";
+import TourOverlay, { useShouldShowTour } from "@/components/TourOverlay";
 
 // ── helpers ─────────────────────────────────────────────────────────────────
 
@@ -190,7 +191,7 @@ function HomeView({
   return (
     <div className="space-y-8 pb-2">
       {/* Greeting */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+      <motion.div id="tour-header" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         <p className="text-xs tracking-[0.15em] text-muted-foreground uppercase mb-2">
           {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
         </p>
@@ -198,7 +199,7 @@ function HomeView({
       </motion.div>
 
       {/* Sunday Reset */}
-      <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
+      <motion.section id="tour-sunday-reset" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
         <div className="flex items-center justify-between mb-1">
           <span className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase font-medium">Sunday Reset</span>
           {isCompact && (
@@ -261,7 +262,7 @@ function HomeView({
       </motion.section>
 
       {/* The Margin */}
-      <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+      <motion.section id="tour-margin" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
         {isLoadingGaps ? (
           <div className="h-32 bg-[#111] rounded-2xl border border-white/6 animate-pulse" />
         ) : (
@@ -271,7 +272,7 @@ function HomeView({
 
       {/* Just Surfaced */}
       {visibleSurfaced.length > 0 && (
-        <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+        <motion.section id="tour-surfaced" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
           <span className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase font-medium block mb-3">
             Just Surfaced
           </span>
@@ -302,7 +303,7 @@ function HomeView({
 
       {/* Interest Pulse */}
       {interests.length > 0 && (
-        <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
+        <motion.section id="tour-interests" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
           <span className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase font-medium block mb-3">
             Interest Pulse
           </span>
@@ -410,6 +411,8 @@ export default function DashboardPage() {
   const [tab, setTab] = useState<"home" | "calendar" | "explore">("home");
   const [showInterests, setShowInterests] = useState(false);
   const [activeInterest, setActiveInterest] = useState<string | null>(null);
+  const shouldShowTour = useShouldShowTour();
+  const [showTour, setShowTour] = useState(false);
 
   const { data: user, isLoading: isLoadingUser } = useGetMe({ query: { queryKey: getGetMeQueryKey() } });
   const { data: summary } = useGetDashboardSummary({ query: { queryKey: getGetDashboardSummaryQueryKey() } });
@@ -419,6 +422,13 @@ export default function DashboardPage() {
   useEffect(() => {
     if (user && !user.onboardingComplete) setLocation("/onboarding");
   }, [user, setLocation]);
+
+  useEffect(() => {
+    if (user?.onboardingComplete && shouldShowTour) {
+      const t = setTimeout(() => setShowTour(true), 600);
+      return () => clearTimeout(t);
+    }
+  }, [user, shouldShowTour]);
 
   if (isLoadingUser || (user && !user.onboardingComplete)) {
     return (
@@ -508,6 +518,13 @@ export default function DashboardPage() {
       <AnimatePresence>
         {showInterests && (
           <InterestsModal interests={interests} onClose={() => setShowInterests(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* First-week tour */}
+      <AnimatePresence>
+        {showTour && (
+          <TourOverlay onDone={() => setShowTour(false)} />
         )}
       </AnimatePresence>
     </div>
