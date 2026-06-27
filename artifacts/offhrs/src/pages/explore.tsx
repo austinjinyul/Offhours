@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useClerk } from "@clerk/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, LogOut } from "lucide-react";
@@ -21,6 +21,7 @@ export default function ExplorePage() {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const filterRef = useRef<HTMLDivElement>(null);
 
   const filtered = EVENTS.filter((e) => {
     const matchCat = activeCategory === "All" || e.category === activeCategory;
@@ -33,6 +34,35 @@ export default function ExplorePage() {
       e.category.toLowerCase().includes(q);
     return matchCat && matchQ;
   });
+
+  // Dock-style magnification: scale each button by proximity to visible center
+  const applyMagnification = useCallback(() => {
+    const el = filterRef.current;
+    if (!el) return;
+    const visibleCenter = el.scrollLeft + el.clientWidth / 2;
+    const btns = el.querySelectorAll<HTMLButtonElement>("button");
+    btns.forEach((btn) => {
+      const btnCenter = btn.offsetLeft + btn.offsetWidth / 2;
+      const dist = Math.abs(btnCenter - visibleCenter);
+      const range = el.clientWidth * 0.52;
+      const t = Math.max(0, 1 - dist / range);
+      const scale = 1 + t * 0.55;
+      btn.style.transform = `scale(${scale})`;
+      btn.style.transformOrigin = "center";
+    });
+  }, []);
+
+  useEffect(() => {
+    const el = filterRef.current;
+    if (!el) return;
+    applyMagnification();
+    el.addEventListener("scroll", applyMagnification, { passive: true });
+    window.addEventListener("resize", applyMagnification);
+    return () => {
+      el.removeEventListener("scroll", applyMagnification);
+      window.removeEventListener("resize", applyMagnification);
+    };
+  }, [applyMagnification]);
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
@@ -73,32 +103,37 @@ export default function ExplorePage() {
           />
         </div>
 
-        {/* Category filter with edge fades */}
-        <div className="relative mb-7 -mx-5">
+        {/* Category filter — dock magnification */}
+        <div className="relative mb-9 -mx-5">
+          {/* Blur fade masks */}
           <div
-            className="absolute left-0 top-0 bottom-2 w-12 z-10 pointer-events-none"
+            className="absolute left-0 top-0 bottom-2 w-14 z-10 pointer-events-none"
             style={{
-              backdropFilter: "blur(6px)",
-              WebkitBackdropFilter: "blur(6px)",
-              maskImage: "linear-gradient(to right, black 30%, transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to right, black 30%, transparent 100%)",
+              backdropFilter: "blur(5px)",
+              WebkitBackdropFilter: "blur(5px)",
+              maskImage: "linear-gradient(to right, black 20%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to right, black 20%, transparent 100%)",
             }}
           />
           <div
-            className="absolute right-0 top-0 bottom-2 w-12 z-10 pointer-events-none"
+            className="absolute right-0 top-0 bottom-2 w-14 z-10 pointer-events-none"
             style={{
-              backdropFilter: "blur(6px)",
-              WebkitBackdropFilter: "blur(6px)",
-              maskImage: "linear-gradient(to left, black 30%, transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to left, black 30%, transparent 100%)",
+              backdropFilter: "blur(5px)",
+              WebkitBackdropFilter: "blur(5px)",
+              maskImage: "linear-gradient(to left, black 20%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to left, black 20%, transparent 100%)",
             }}
           />
-          <div className="flex justify-center gap-2 overflow-x-auto pb-2 px-5 scrollbar-custom">
+          <div
+            ref={filterRef}
+            className="flex justify-center gap-3 overflow-x-auto pb-3 px-5 scrollbar-custom"
+            style={{ scrollBehavior: "smooth" }}
+          >
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`flex-none text-[10px] tracking-[0.1em] font-medium px-3 py-1 rounded-full border transition-all whitespace-nowrap ${
+                className={`flex-none text-[10px] tracking-[0.1em] font-medium px-3 py-1 rounded-full border transition-colors whitespace-nowrap ${
                   activeCategory === cat
                     ? "bg-foreground text-background border-foreground"
                     : "text-muted-foreground border-white/10 hover:border-white/20 hover:text-foreground"
@@ -148,11 +183,9 @@ export default function ExplorePage() {
                       {event.category}
                     </span>
                   </div>
-
                   <p className="text-xs text-muted-foreground/60 font-light mb-3">
                     {event.venue} · {event.neighborhood}
                   </p>
-
                   <AnimatePresence>
                     {isExpanded && (
                       <motion.p
@@ -166,7 +199,6 @@ export default function ExplorePage() {
                       </motion.p>
                     )}
                   </AnimatePresence>
-
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] tracking-[0.15em] text-muted-foreground/40 uppercase font-medium">
                       {event.day} · {event.time}
