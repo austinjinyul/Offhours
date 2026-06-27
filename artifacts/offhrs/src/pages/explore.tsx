@@ -98,7 +98,7 @@ export default function ExplorePage() {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`flex-none text-[11px] tracking-[0.12em] font-medium px-4 py-2 rounded-full border transition-all whitespace-nowrap ${
+                className={`flex-none text-[10px] tracking-[0.1em] font-medium px-3 py-1 rounded-full border transition-all whitespace-nowrap ${
                   activeCategory === cat
                     ? "bg-foreground text-background border-foreground"
                     : "text-muted-foreground border-white/10 hover:border-white/20 hover:text-foreground"
