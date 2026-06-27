@@ -93,7 +93,7 @@ export default function ExplorePage() {
               WebkitMaskImage: "linear-gradient(to left, black 30%, transparent 100%)",
             }}
           />
-          <div className="flex gap-2 overflow-x-auto pb-2 px-5 scrollbar-custom">
+          <div className="flex justify-center gap-2 overflow-x-auto pb-2 px-5 scrollbar-custom">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
