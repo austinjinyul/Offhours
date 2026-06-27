@@ -1,0 +1,196 @@
+Priority 1: Critical Security & Bug Fixes
+1. Fix Race Condition in User Creation (artifacts/api-server/src/routes/users.ts)
+The getOrCreateUser function has a race condition. Replace the select-then-insert pattern with an atomic upsert:
+
+
+async function getOrCreateUser(clerkId: string, req: any): Promise<typeof usersTable.$inferSelect> {
+  const session = req.auth;
+  const sessionClaims = session?.sessionClaims;
+  
+  const [user] = await db.insert(usersTable)
+    .values({
+      clerkId,
+      email: sessionClaims?.email as string,
+      name: sessionClaims?.name as string || null,
+      avatarUrl: (sessionClaims as any)?.image_url || null,
+      interests: [],
+      onboardingComplete: false,
+    })
+    .onConflictDoUpdate({
+      target: usersTable.clerkId,
+      set: {
+        email: sessionClaims?.email as string,
+        name: sessionClaims?.name as string || null,
+        updatedAt: new Date(),
+      },
+    })
+    .returning();
+  
+  return user;
+}
+2. Fix CORS Security Vulnerability (artifacts/api-server/src/app.ts)
+Replace the insecure CORS config with a domain whitelist:
+
+
+import cors from 'cors';
+
+const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://offhours.ai',
+  'https://www.offhours.ai',
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
+app.use(cors({
+  credentials: true,
+  origin: (origin, callback) => {
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+}));
+3. Fix Unsafe Geocoding (artifacts/api-server/src/routes/users.ts)
+Add proper error handling for Nominatim API:
+
+
+const geocodeRes = await fetch(
+  `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(workAddress)}&limit=1`
+);
+
+if (!geocodeRes.ok) {
+  return res.status(502).json({ error: 'Geocoding service unavailable' });
+}
+
+const geocodeData = await geocodeRes.json();
+if (!geocodeData[0]?.lat || !geocodeData[0]?.lon) {
+  return res.status(400).json({ error: 'Address not found. Please enter a valid address.' });
+}
+
+const lat = parseFloat(geocodeData[0].lat);
+const lng = parseFloat(geocodeData[0].lon);
+
+if (isNaN(lat) || isNaN(lng)) {
+  return res.status(500).json({ error: 'Invalid geocoding result' });
+}
+Priority 2: Type Safety Improvements
+4. Add Typed Request Interface
+Create artifacts/api-server/src/types.ts:
+
+
+import { Request } from 'express';
+
+declare module 'express' {
+  interface Request {
+    auth?: {
+      userId: string;
+      sessionClaims?: {
+        email: string;
+        name?: string;
+        image_url?: string;
+      };
+    };
+  }
+}
+Update all route handlers to use typed req instead of req: any.
+
+Priority 3: Frontend Error Handling
+5. Add React Error Boundary
+Create artifacts/offhrs/src/components/ErrorBoundary.tsx:
+
+
+import { Component, ErrorInfo, ReactNode } from 'react';
+
+interface Props {
+  children: ReactNode;
+  fallback?: ReactNode;
+}
+
+interface State {
+  hasError: boolean;
+}
+
+export class ErrorBoundary extends Component<Props, State> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || (
+        <div className="flex flex-col items-center justify-center min-h-screen p-4">
+          <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
+          <button onClick={() => this.setState({ hasError: false })}>
+            Try again
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+Wrap the App in ErrorBoundary in main.tsx.
+
+Priority 4: Replace Dummy Data with Real Implementation
+6. Implement Real Google Calendar Integration
+Create artifacts/api-server/src/routes/calendar.ts with Google Calendar OAuth flow:
+
+Add /calendar/connect endpoint that redirects to Google OAuth
+Add /calendar/callback endpoint to handle OAuth callback
+Store refresh tokens in a new calendar_tokens table
+Replace getDummyCalendarEvents() with real Google Calendar API calls
+Handle token refresh automatically
+7. Replace DUMMY_EVENTS with Real Event Data Source
+Create artifacts/api-server/src/routes/events.ts:
+
+Connect to an events API (Eventbrite, Meetup, or Yelp Fusion)
+Add filtering by user interests and location
+Implement caching to avoid API rate limits
+Store events in database for offline access
+8. Implement Search Functionality
+Create artifacts/api-server/src/routes/search.ts:
+
+Full-text search on events table
+Filter by category, date range, distance
+Return paginated results
+Priority 5: Environment Setup
+9. Add Required Environment Variables
+Ensure .env includes:
+
+
+FRONTEND_URL=https://your-frontend.com
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+EVENTBRITE_API_KEY=your-eventbrite-key (optional)
+10. Create Database Migration for Calendar Tokens
+Create migration for new table:
+
+
+CREATE TABLE calendar_tokens (
+  id SERIAL PRIMARY KEY,
+  user_id TEXT REFERENCES users(clerk_id) ON DELETE CASCADE,
+  provider TEXT NOT NULL,
+  access_token TEXT NOT NULL,
+  refresh_token TEXT NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE(user_id, provider)
+);
+Priority 6: Testing & Verification
+After all fixes:
+
+Run pnpm run typecheck to ensure no type errors
+Run pnpm run build to ensure successful build
+Test the auth flow end-to-end
+Test concurrent user creation (race condition fix)
+Verify CORS blocks unauthorized origins
+Test geocoding with invalid addresses
