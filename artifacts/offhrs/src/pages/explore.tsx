@@ -5,128 +5,16 @@ import { Search, LogOut } from "lucide-react";
 
 const CATEGORIES = ["All", "Food & Drink", "Fitness", "Networking", "Wellness", "Arts", "Social"];
 
-const EVENTS = [
-  {
-    id: "e1",
-    title: "Natural Wine Tasting",
-    category: "Food & Drink",
-    venue: "Ordinaire Wine Bar",
-    neighborhood: "Grand Lake, Oakland",
-    day: "Tuesday",
-    time: "7:00 PM",
-    description: "Low-intervention wines from small European producers. Guided flight of 6.",
-  },
-  {
-    id: "e2",
-    title: "Morning Pilates Flow",
-    category: "Fitness",
-    venue: "The Pilates Studio",
-    neighborhood: "Hayes Valley, SF",
-    day: "Wednesday",
-    time: "6:30 AM",
-    description: "60-minute reformer class focused on core strength and spinal mobility.",
-  },
-  {
-    id: "e3",
-    title: "Tech Founders Mixer",
-    category: "Networking",
-    venue: "Atrium at Pier 17",
-    neighborhood: "Embarcadero, SF",
-    day: "Thursday",
-    time: "6:30 PM",
-    description: "Curated gathering of Series A and B founders. 80 attendees, invitation-only.",
-  },
-  {
-    id: "e4",
-    title: "Cold Plunge + Sauna Circuit",
-    category: "Wellness",
-    venue: "Bathhouse SF",
-    neighborhood: "SOMA, SF",
-    day: "Friday",
-    time: "5:30 PM",
-    description: "90-minute thermal circuit with guided breathwork intro. Walk-in friendly.",
-  },
-  {
-    id: "e5",
-    title: "Bookclub: Fiction & Cognac",
-    category: "Social",
-    venue: "Lost & Found",
-    neighborhood: "Potrero Hill, SF",
-    day: "Sunday",
-    time: "4:00 PM",
-    description: "Monthly literary salon. This month: Kazuo Ishiguro's Klara and the Sun.",
-  },
-  {
-    id: "e6",
-    title: "Life Drawing Session",
-    category: "Arts",
-    venue: "Root Division",
-    neighborhood: "Mission, SF",
-    day: "Tuesday",
-    time: "7:30 PM",
-    description: "Open figure drawing studio. All skill levels. Bring your own materials.",
-  },
-  {
-    id: "e7",
-    title: "Jazz at the Standard",
-    category: "Arts",
-    venue: "The Standard",
-    neighborhood: "Downtown Oakland",
-    day: "Friday",
-    time: "9:00 PM",
-    description: "Live jazz quartet every Friday night. No cover before 9:30 PM.",
-  },
-  {
-    id: "e8",
-    title: "Outdoor Bootcamp",
-    category: "Fitness",
-    venue: "Dolores Park",
-    neighborhood: "Mission, SF",
-    day: "Saturday",
-    time: "8:00 AM",
-    description: "HIIT-style group workout with a certified trainer. Free, all levels welcome.",
-  },
-  {
-    id: "e9",
-    title: "Ceramics Drop-In",
-    category: "Arts",
-    venue: "Choplet Studio",
-    neighborhood: "Dogpatch, SF",
-    day: "Thursday",
-    time: "6:00 PM",
-    description: "Open studio session on the wheel or hand-building. No experience needed.",
-  },
-  {
-    id: "e10",
-    title: "Sound Bath & Meditation",
-    category: "Wellness",
-    venue: "Alchemy Collective",
-    neighborhood: "Lower Haight, SF",
-    day: "Wednesday",
-    time: "7:00 PM",
-    description: "60-minute sound bath with crystal singing bowls. Mats provided.",
-  },
-  {
-    id: "e11",
-    title: "Founders Dinner: Future of AI",
-    category: "Networking",
-    venue: "Private Residence",
-    neighborhood: "Pacific Heights, SF",
-    day: "Monday",
-    time: "7:00 PM",
-    description: "Intimate dinner for 20 operators and founders. Application required.",
-  },
-  {
-    id: "e12",
-    title: "Natural Biodynamic Wine Fair",
-    category: "Food & Drink",
-    venue: "Fort Mason Center",
-    neighborhood: "Marina, SF",
-    day: "Saturday",
-    time: "2:00 PM",
-    description: "Over 40 producers pouring. General admission includes 10 tastings.",
-  },
-];
+const EVENTS: {
+  id: string;
+  title: string;
+  category: string;
+  venue: string;
+  neighborhood: string;
+  day: string;
+  time: string;
+  description: string;
+}[] = [];
 
 
 export default function ExplorePage() {
@@ -174,7 +62,7 @@ export default function ExplorePage() {
             Explore
           </h1>
           <p className="text-sm text-muted-foreground font-light">
-            {filtered.length} events this week
+            {filtered.length > 0 ? `${filtered.length} events this week` : "No events yet"}
           </p>
         </div>
 
@@ -210,14 +98,19 @@ export default function ExplorePage() {
         <div className="space-y-3">
           <AnimatePresence initial={false}>
             {filtered.length === 0 && (
-              <motion.p
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-sm text-muted-foreground/40 font-light py-8 text-center"
+                className="py-16 text-center"
               >
-                No events match your search.
-              </motion.p>
+                <p className="text-sm text-muted-foreground/40 font-light mb-1">
+                  Events will appear here.
+                </p>
+                <p className="text-xs text-muted-foreground/25 font-light">
+                  Nothing to show yet.
+                </p>
+              </motion.div>
             )}
             {filtered.map((event, i) => {
               const isExpanded = expandedId === event.id;
