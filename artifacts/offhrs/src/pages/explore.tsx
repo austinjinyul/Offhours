@@ -198,7 +198,7 @@ export default function ExplorePage() {
         </div>
 
         {/* Category filter */}
-        <div className="flex gap-2 overflow-x-auto pb-1 -mx-5 px-5 mb-7 scrollbar-hide">
+        <div className="flex gap-2 overflow-x-auto pb-2 -mx-5 px-5 mb-7 scrollbar-custom">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
