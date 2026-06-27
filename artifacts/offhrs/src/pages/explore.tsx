@@ -16,7 +16,6 @@ const EVENTS: {
   description: string;
 }[] = [];
 
-
 export default function ExplorePage() {
   const { signOut } = useClerk();
   const [query, setQuery] = useState("");
@@ -41,10 +40,7 @@ export default function ExplorePage() {
 
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
-          <span
-            className="text-sm font-light text-foreground"
-            style={{ letterSpacing: "0.12em" }}
-          >
+          <span className="text-sm font-light text-foreground" style={{ letterSpacing: "0.12em" }}>
             offhours.ai
           </span>
           <button
@@ -77,21 +73,25 @@ export default function ExplorePage() {
           />
         </div>
 
-        {/* Category filter */}
-        <div className="flex gap-2 overflow-x-auto pb-2 -mx-5 px-5 mb-7 scrollbar-custom">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`flex-none text-[11px] tracking-[0.12em] font-medium px-4 py-2 rounded-full border transition-all whitespace-nowrap ${
-                activeCategory === cat
-                  ? "bg-foreground text-background border-foreground"
-                  : "text-muted-foreground border-white/10 hover:border-white/20 hover:text-foreground"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        {/* Category filter with edge fades */}
+        <div className="relative mb-7 -mx-5">
+          <div className="absolute left-0 top-0 bottom-2 w-8 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+          <div className="flex gap-2 overflow-x-auto pb-2 px-5 scrollbar-custom">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`flex-none text-[11px] tracking-[0.12em] font-medium px-4 py-2 rounded-full border transition-all whitespace-nowrap ${
+                  activeCategory === cat
+                    ? "bg-foreground text-background border-foreground"
+                    : "text-muted-foreground border-white/10 hover:border-white/20 hover:text-foreground"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Event list */}
@@ -124,7 +124,6 @@ export default function ExplorePage() {
                   onClick={() => setExpandedId(isExpanded ? null : event.id)}
                   className="bg-[#111] border border-white/6 rounded-2xl p-5 cursor-pointer hover:border-white/12 transition-colors"
                 >
-                  {/* Top row */}
                   <div className="flex items-start justify-between gap-3 mb-1.5">
                     <h3 className="text-[1.05rem] font-medium leading-snug flex-1">
                       {event.title}
@@ -134,12 +133,10 @@ export default function ExplorePage() {
                     </span>
                   </div>
 
-                  {/* Venue */}
                   <p className="text-xs text-muted-foreground/60 font-light mb-3">
                     {event.venue} · {event.neighborhood}
                   </p>
 
-                  {/* Expanded description */}
                   <AnimatePresence>
                     {isExpanded && (
                       <motion.p
@@ -154,7 +151,6 @@ export default function ExplorePage() {
                     )}
                   </AnimatePresence>
 
-                  {/* Bottom row */}
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] tracking-[0.15em] text-muted-foreground/40 uppercase font-medium">
                       {event.day} · {event.time}
@@ -171,6 +167,7 @@ export default function ExplorePage() {
             })}
           </AnimatePresence>
         </div>
+
       </div>
     </div>
   );
