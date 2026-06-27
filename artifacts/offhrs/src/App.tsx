@@ -8,8 +8,7 @@ import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/reac
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import LandingPage from "@/pages/landing";
-import OnboardingPage from "@/pages/onboarding";
-import DashboardPage from "@/pages/dashboard";
+import ExplorePage from "@/pages/explore";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient({
@@ -130,7 +129,7 @@ function HomeRedirect() {
   return (
     <>
       <Show when="signed-in">
-        <Redirect to="/dashboard" />
+        <Redirect to="/explore" />
       </Show>
       <Show when="signed-out">
         <LandingPage />
@@ -139,24 +138,11 @@ function HomeRedirect() {
   );
 }
 
-function DashboardGuard() {
+function ExploreGuard() {
   return (
     <>
       <Show when="signed-in">
-        <DashboardPage />
-      </Show>
-      <Show when="signed-out">
-        <Redirect to="/" />
-      </Show>
-    </>
-  );
-}
-
-function OnboardingGuard() {
-  return (
-    <>
-      <Show when="signed-in">
-        <OnboardingPage />
+        <ExplorePage />
       </Show>
       <Show when="signed-out">
         <Redirect to="/" />
@@ -179,13 +165,13 @@ function ClerkProviderWithRoutes() {
         signIn: {
           start: {
             title: "Sign in to Offhours",
-            subtitle: "Welcome back to your command center",
+            subtitle: "Welcome back",
           },
         },
         signUp: {
           start: {
             title: "Create your account",
-            subtitle: "Reclaim your evenings",
+            subtitle: "Discover your city's best kept secrets",
           },
         },
       }}
@@ -199,8 +185,7 @@ function ClerkProviderWithRoutes() {
             <Route path="/" component={HomeRedirect} />
             <Route path="/sign-in/*?" component={SignInPage} />
             <Route path="/sign-up/*?" component={SignUpPage} />
-            <Route path="/onboarding" component={OnboardingGuard} />
-            <Route path="/dashboard" component={DashboardGuard} />
+            <Route path="/explore" component={ExploreGuard} />
             <Route component={NotFound} />
           </Switch>
           <Toaster />
