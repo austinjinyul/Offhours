@@ -75,8 +75,24 @@ export default function ExplorePage() {
 
         {/* Category filter with edge fades */}
         <div className="relative mb-7 -mx-5">
-          <div className="absolute left-0 top-0 bottom-2 w-8 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+          <div
+            className="absolute left-0 top-0 bottom-2 w-12 z-10 pointer-events-none"
+            style={{
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)",
+              maskImage: "linear-gradient(to right, black 30%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to right, black 30%, transparent 100%)",
+            }}
+          />
+          <div
+            className="absolute right-0 top-0 bottom-2 w-12 z-10 pointer-events-none"
+            style={{
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)",
+              maskImage: "linear-gradient(to left, black 30%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to left, black 30%, transparent 100%)",
+            }}
+          />
           <div className="flex gap-2 overflow-x-auto pb-2 px-5 scrollbar-custom">
             {CATEGORIES.map((cat) => (
               <button
