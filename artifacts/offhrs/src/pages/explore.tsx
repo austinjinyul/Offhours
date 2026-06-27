@@ -128,14 +128,6 @@ const EVENTS = [
   },
 ];
 
-const CATEGORY_COLORS: Record<string, string> = {
-  "Food & Drink": "text-amber-400/80 border-amber-400/20 bg-amber-400/5",
-  Fitness: "text-emerald-400/80 border-emerald-400/20 bg-emerald-400/5",
-  Networking: "text-blue-400/80 border-blue-400/20 bg-blue-400/5",
-  Wellness: "text-violet-400/80 border-violet-400/20 bg-violet-400/5",
-  Arts: "text-rose-400/80 border-rose-400/20 bg-rose-400/5",
-  Social: "text-orange-400/80 border-orange-400/20 bg-orange-400/5",
-};
 
 export default function ExplorePage() {
   const { signOut } = useClerk();
@@ -178,7 +170,7 @@ export default function ExplorePage() {
 
         {/* Heading */}
         <div className="mb-8">
-          <h1 className="font-serif text-[3rem] leading-[1.05] tracking-tight mb-2">
+          <h1 className="text-[2.8rem] font-semibold leading-[1.05] tracking-tight mb-2">
             Explore
           </h1>
           <p className="text-sm text-muted-foreground font-light">
@@ -229,7 +221,6 @@ export default function ExplorePage() {
             )}
             {filtered.map((event, i) => {
               const isExpanded = expandedId === event.id;
-              const catStyle = CATEGORY_COLORS[event.category] ?? "text-muted-foreground border-white/10";
               return (
                 <motion.div
                   key={event.id}
@@ -242,12 +233,10 @@ export default function ExplorePage() {
                 >
                   {/* Top row */}
                   <div className="flex items-start justify-between gap-3 mb-1.5">
-                    <h3 className="font-serif text-[1.15rem] leading-snug flex-1">
+                    <h3 className="text-[1.05rem] font-medium leading-snug flex-1">
                       {event.title}
                     </h3>
-                    <span
-                      className={`flex-none text-[10px] tracking-[0.1em] font-medium px-2.5 py-1 rounded-full border ${catStyle}`}
-                    >
+                    <span className="flex-none text-[10px] tracking-[0.1em] font-medium px-2.5 py-1 rounded-full border border-white/10 text-muted-foreground/60">
                       {event.category}
                     </span>
                   </div>

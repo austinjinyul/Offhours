@@ -24,9 +24,9 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h1 className="font-serif text-5xl leading-[1.08] mb-4 tracking-tight">
+          <h1 className="text-5xl font-semibold leading-[1.08] mb-4 tracking-tight">
             The evenings<br />
-            <span className="italic text-muted-foreground">worth taking.</span>
+            <span className="italic text-muted-foreground font-light">worth taking.</span>
           </h1>
 
           <p className="text-sm text-muted-foreground leading-relaxed mt-5 mb-10 max-w-xs font-light">
